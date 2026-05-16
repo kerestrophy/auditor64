@@ -1,0 +1,20 @@
+﻿# Build outputs
+build/
+out/
+target/
+dist/
+*.class
+*.jar
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Engine binaries
+src/main/resources/engine/*
+!src/main/resources/engine/.gitkeep
