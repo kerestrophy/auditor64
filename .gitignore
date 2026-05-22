@@ -3,6 +3,7 @@ build/
 out/
 target/
 dist/
+node_modules/
 *.class
 *.jar
 

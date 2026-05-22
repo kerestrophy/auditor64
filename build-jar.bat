@@ -4,6 +4,16 @@ setlocal
 cd /d "%~dp0"
 
 echo Building auditor64...
+if not exist "%~dp0node_modules\chess.js" (
+    echo Installing Node dependencies...
+    call npm install --omit=dev
+    if errorlevel 1 (
+        echo.
+        echo npm install failed.
+        exit /b 1
+    )
+)
+
 call mvn clean package
 if errorlevel 1 (
     echo.
@@ -17,6 +27,8 @@ set "TARGET_DIST=%~dp0target\dist"
 if exist "%DIST_DIR%" rmdir /s /q "%DIST_DIR%"
 mkdir "%DIST_DIR%"
 mkdir "%DIST_DIR%\lib"
+mkdir "%DIST_DIR%\scripts"
+mkdir "%DIST_DIR%\node_modules"
 
 copy /y "%~dp0target\auditor64-1.0.0.jar" "%DIST_DIR%\auditor64.jar" >nul
 if errorlevel 1 (
@@ -29,6 +41,21 @@ if errorlevel 1 (
     echo Failed to copy runtime libraries.
     exit /b 1
 )
+
+xcopy /y /i "%~dp0scripts\*.js" "%DIST_DIR%\scripts\" >nul
+if errorlevel 1 (
+    echo Failed to copy audit scripts.
+    exit /b 1
+)
+
+xcopy /y /i /e "%~dp0node_modules\chess.js" "%DIST_DIR%\node_modules\chess.js\" >nul
+if errorlevel 1 (
+    echo Failed to copy Node dependencies.
+    exit /b 1
+)
+
+copy /y "%~dp0package.json" "%DIST_DIR%\package.json" >nul
+if exist "%~dp0package-lock.json" copy /y "%~dp0package-lock.json" "%DIST_DIR%\package-lock.json" >nul
 
 (
     echo @echo off
