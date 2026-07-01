@@ -1,0 +1,9 @@
+{
+  "name": "auditor64",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "dependencies": {
+    "chess.js": "^1.4.0"
+  }
+}
